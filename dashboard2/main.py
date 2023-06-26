@@ -1,15 +1,15 @@
 import panel as pn
 import numpy as np
-import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 from IPython.display import SVG
 
 import plotly.subplots as sp
 import plotly.graph_objects as go
 
-# Create the SVG pane
-svg_content = open("brain.svg").read()
-svg_image = pn.pane.SVG(SVG(svg_content), width=600, height=600)
+def buildColors():
+    tag = ["F3", "F4", "F7", "F8", "FZ"]
+    col = ["#0000ff", "#00ff00", "#ff0000", "#ffff00", "#ff00ff"]
+    return dict(zip(tag, col))
 
 def createRnd(seed, num_lines):
     np.random.seed(0)
@@ -20,16 +20,34 @@ def createRnd(seed, num_lines):
         lines.append((x, y))
     return lines
 
+# Create the line plot using Plotly graph objects
+num_lines = 4  # Number of lines to plot
+lines = createRnd(100, num_lines)
+
+# Create the SVG pane
+svg_content = open("brain.svg").read()
+svg_image = pn.pane.SVG(SVG(svg_content), width=600, height=600)
+colors = buildColors()
+
+def paintSensor(soup, tag):
+    element = soup.find(id=tag)
+    if element is not None:
+        color = colors[tag]
+        element["style"] = f'fill:{color}'
+
 def update_svg_fill(event, svg_image):
     # Change the "fill" attribute in the in-memory SVG representation
     soup = BeautifulSoup(svg_image.object.data, "xml")
-    tag_f8 = soup.find(id="F8")
-    print(tag_f8)
-    tag_f8['style'] = 'fill:#00ff00'
+    
+    paintSensor(soup, "F3")
+    paintSensor(soup, "F4")
+    paintSensor(soup, "F7")
+    paintSensor(soup, "F8")
+    paintSensor(soup, "FZ")
+    
     svg_image.object = SVG(str(soup))
 
 def update_plot(event):
-    print(event.new)
     num_lines = 3  # Number of lines to plot
     lines = createRnd(event.new, num_lines)
 
@@ -44,10 +62,6 @@ def update_plot(event):
 
     # Change the "fill" attribute in the in-memory SVG representation
     update_svg_fill(event.new, svg_image)
-
-# Create the line plot using Plotly graph objects
-num_lines = 4  # Number of lines to plot
-lines = createRnd(100, num_lines)
 
 fig = sp.make_subplots(rows=num_lines, cols=1, subplot_titles=[f'Line {i+1}' for i in range(num_lines)])
 
