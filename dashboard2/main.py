@@ -5,10 +5,10 @@ from IPython.display import SVG
 
 import plotly.subplots as sp
 import plotly.graph_objects as go
-
+tag = ["F3", "F4", "F7", "F8", "FZ"]
+col = ["#0000ff", "#00ff00", "#ff0000", "#ffff00", "#ff00ff"]
+colors = {}
 def buildColors():
-    tag = ["F3", "F4", "F7", "F8", "FZ"]
-    col = ["#0000ff", "#00ff00", "#ff0000", "#ffff00", "#ff00ff"]
     return dict(zip(tag, col))
 
 def createRnd(seed, num_lines):
