@@ -5,7 +5,13 @@ from IPython.display import SVG
 
 import plotly.subplots as sp
 import plotly.graph_objects as go
-tag = ["F3", "F4", "F7", "F8", "FZ"]
+tag = [
+       "FP1","FP2",
+       "F3", "F4", "F7", "F8", "FZ",
+       "A1","A2","T3","T4","C3","C4","CZ",
+       "T5","T6","P3","P4","PZ",
+       "O1","O2"
+       ]
 col = [
     "#FF3C00",  # Vivid Orange
     "#FF9700",  # Bright Orange
@@ -70,14 +76,57 @@ def update_svg_fill(event, svg_image):
     # Change the "fill" attribute in the in-memory SVG representation
     soup = BeautifulSoup(svg_image.object.data, "xml")
     
+    paintSensor(soup, "FP1")
+    paintSensor(soup, "FP2")
+    
     paintSensor(soup, "F3")
     paintSensor(soup, "F4")
     paintSensor(soup, "F7")
     paintSensor(soup, "F8")
     paintSensor(soup, "FZ")
     
-    changeElementHeight(soup, "F8bar", event)
+    paintSensor(soup, "A1")
+    paintSensor(soup, "A2")
+    paintSensor(soup, "T3") 
+    paintSensor(soup, "T4") 
+    paintSensor(soup, "C3") 
+    paintSensor(soup, "C4") 
+    paintSensor(soup, "CZ")
+    
+    paintSensor(soup, "T5")
+    paintSensor(soup, "T6")
+    paintSensor(soup, "P3")
+    paintSensor(soup, "P4")
+    paintSensor(soup, "PZ")
+    
+    paintSensor(soup, "O1")
+    paintSensor(soup, "O2")
+    
+    changeElementHeight(soup, "FP1bar", event)
+    changeElementHeight(soup, "FP2bar", event)
+
+    changeElementHeight(soup, "F3bar", event)
+    changeElementHeight(soup, "F4bar", event)
     changeElementHeight(soup, "F7bar", event)
+    changeElementHeight(soup, "F8bar", event)
+    changeElementHeight(soup, "FZbar", event)
+    
+    changeElementHeight(soup, "A1bar", event)
+    changeElementHeight(soup, "A2bar", event)
+    changeElementHeight(soup, "T3bar", event) 
+    changeElementHeight(soup, "T4bar", event) 
+    changeElementHeight(soup, "C3bar", event) 
+    changeElementHeight(soup, "C4bar", event) 
+    changeElementHeight(soup, "CZbar", event)
+    
+    changeElementHeight(soup, "T5bar", event)
+    changeElementHeight(soup, "T6bar", event)
+    changeElementHeight(soup, "P3bar", event)
+    changeElementHeight(soup, "P4bar", event)
+    changeElementHeight(soup, "PZbar", event)
+    
+    changeElementHeight(soup, "O1bar", event)
+    changeElementHeight(soup, "O2bar", event)
     
     # Must be the last call!
     svg_image.object = SVG(str(soup))
