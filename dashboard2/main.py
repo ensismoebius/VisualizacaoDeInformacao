@@ -5,14 +5,15 @@ from IPython.display import SVG
 
 import plotly.subplots as sp
 import plotly.graph_objects as go
-tag = [
+
+sensorsTags = [
        "FP1","FP2",
        "F3", "F4", "F7", "F8", "FZ",
        "A1","A2","T3","T4","C3","C4","CZ",
        "T5","T6","P3","P4","PZ",
        "O1","O2"
        ]
-col = [
+sensorsColors = [
     "#FF3C00",  # Vivid Orange
     "#FF9700",  # Bright Orange
     "#FFD300",  # Sunflower Yellow
@@ -36,16 +37,22 @@ col = [
     "#FFAF40"   # Peach
 ]
 
-options = {
+subjectsNamesAndCodes = {
     'Sujeito01': '1',
     'Sujeito02': '2',
     'Sujeito03': '3'
 }
 
-colors = dict(zip(tag, col))
+sensorToColorRelationship = dict(zip(sensorsTags, sensorsColors))
 
-def createRnd(seed, num_lines):
-    np.random.seed(0)
+# Create the line plot using Plotly graph objects
+num_lines = 3  # Number of lines to plot
+
+# Create the SVG pane
+svg_content = open("brain.svg").read()
+svg_image = pn.pane.SVG(SVG(svg_content), width=600, height=600)
+
+def readData(seed, num_lines):
     lines = []
     for _ in range(num_lines):
         x = np.random.rand(seed)
@@ -53,27 +60,21 @@ def createRnd(seed, num_lines):
         lines.append((x, y))
     return lines
 
-# Create the line plot using Plotly graph objects
-num_lines = 4  # Number of lines to plot
-lines = createRnd(100, num_lines)
+lines = readData(100, num_lines)
 
-# Create the SVG pane
-svg_content = open("brain.svg").read()
-svg_image = pn.pane.SVG(SVG(svg_content), width=600, height=600)
 
 def changeElementHeight(soup, element_id, new_height):
     element = soup.find(id=element_id)
     if element is not None:
         element['height'] = str(new_height/1000)
 
-def paintSensor(soup, tag):
-    element = soup.find(id=tag)
+def paintSensor(soup, sensorsTags):
+    element = soup.find(id=sensorsTags)
     if element is not None:
-        color = colors[tag]
+        color = sensorToColorRelationship[sensorsTags]
         element["style"] = f'fill:{color}'
 
-def update_svg_fill(event, svg_image):
-    # Change the "fill" attribute in the in-memory SVG representation
+def updateBrainFigure(event, svg_image):
     soup = BeautifulSoup(svg_image.object.data, "xml")
     
     paintSensor(soup, "FP1")
@@ -133,7 +134,7 @@ def update_svg_fill(event, svg_image):
 
 def update_plot(event):
     num_lines = 3  # Number of lines to plot
-    lines = createRnd(event.new, num_lines)
+    lines = readData(event.new, num_lines)
 
     fig = sp.make_subplots(rows=num_lines, cols=1, subplot_titles=[f'Line {i+1}' for i in range(num_lines)])
 
@@ -145,7 +146,7 @@ def update_plot(event):
     plot_pane.object = fig
 
     # Change the "fill" attribute in the in-memory SVG representation
-    update_svg_fill(event.new, svg_image)
+    updateBrainFigure(event.new, svg_image)
 
 fig = sp.make_subplots(rows=num_lines, cols=1, subplot_titles=[f'Line {i+1}' for i in range(num_lines)])
 
@@ -158,38 +159,34 @@ fig.update_layout(height=600, width=800, title='Line Plots')
 # Create the Plotly pane
 plot_pane = pn.pane.Plotly(fig)
 
-int_range_slider = pn.widgets.IntSlider(
+intRangeSliderWidget = pn.widgets.IntSlider(
     name='Integer Range Slider',
     start=0, end=10000, value=0, step=1)
 
 # Bind the slider value to the update_plot function
-int_range_slider.param.watch(update_plot, 'value')
+intRangeSliderWidget.param.watch(update_plot, 'value')
 
-select_widget = pn.widgets.Select(
+selectWidget = pn.widgets.Select(
     name='Selecione a sujeito',
     groups={'Imaginado': ['Sujeito01', 'Sujeito02'], 'Falado': ['Sujeito03']}
 )
 
-def callback(event):
+def selectData(event):
     selected_option = event.obj.value
-    print(options.get(selected_option, 'Invalid option'))
-    return options.get(selected_option, 'Invalid option')
+    print(subjectsNamesAndCodes.get(selected_option, 'Invalid option'))
+    return subjectsNamesAndCodes.get(selected_option, 'Invalid option')
 
-select_widget.param.watch(callback, 'value')
+selectWidget.param.watch(selectData, 'value')
 
-switchLabel = pn.widgets.StaticText(name='Visão geral', value='')
-switch = pn.widgets.Switch(name='Visão geral')
-
-
-# Bind the select value to the update_plot function
-#select.param.watch(update_plot, 'value')
+switchLabelWidget = pn.widgets.StaticText(name='Visão geral', value='')
+switchWidget = pn.widgets.Switch(name='Visão geral')
 
 dashboard = pn.Row(
     svg_image, 
     pn.Column(
-        pn.Row(int_range_slider, select_widget),
+        pn.Row(intRangeSliderWidget, selectWidget),
         plot_pane,
-        pn.Row(switchLabel, switch)
+        pn.Row(switchLabelWidget, switchWidget)
         ), 
     sizing_mode='stretch_width')
 
