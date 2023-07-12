@@ -6,10 +6,37 @@ from IPython.display import SVG
 import plotly.subplots as sp
 import plotly.graph_objects as go
 tag = ["F3", "F4", "F7", "F8", "FZ"]
-col = ["#0000ff", "#00ff00", "#ff0000", "#ffff00", "#ff00ff"]
-colors = {}
-def buildColors():
-    return dict(zip(tag, col))
+col = [
+    "#FF3C00",  # Vivid Orange
+    "#FF9700",  # Bright Orange
+    "#FFD300",  # Sunflower Yellow
+    "#FF4D6E",  # Coral Pink
+    "#FF66B2",  # Bubblegum Pink
+    "#FF8AC3",  # Light Pink
+    "#FF00D8",  # Magenta
+    "#6A00FF",  # Vivid Purple
+    "#A050FF",  # Lavender Purple
+    "#FFA6FF",  # Cotton Candy
+    "#00C4FF",  # Sky Blue
+    "#00E6FF",  # Aqua Blue
+    "#00FFD4",  # Mint Green
+    "#1AFFB5",  # Turquoise
+    "#00FF89",  # Neon Green
+    "#00FF00",  # Lime Green
+    "#FFFF33",  # Bright Yellow
+    "#F9FF66",  # Lemon Yellow
+    "#FF9F00",  # Amber
+    "#FF7733",  # Coral Orange
+    "#FFAF40"   # Peach
+]
+
+options = {
+    'Sujeito01': '1',
+    'Sujeito02': '2',
+    'Sujeito03': '3'
+}
+
+colors = dict(zip(tag, col))
 
 def createRnd(seed, num_lines):
     np.random.seed(0)
@@ -27,7 +54,11 @@ lines = createRnd(100, num_lines)
 # Create the SVG pane
 svg_content = open("brain.svg").read()
 svg_image = pn.pane.SVG(SVG(svg_content), width=600, height=600)
-colors = buildColors()
+
+def changeElementHeight(soup, element_id, new_height):
+    element = soup.find(id=element_id)
+    if element is not None:
+        element['height'] = str(new_height/1000)
 
 def paintSensor(soup, tag):
     element = soup.find(id=tag)
@@ -45,6 +76,10 @@ def update_svg_fill(event, svg_image):
     paintSensor(soup, "F8")
     paintSensor(soup, "FZ")
     
+    changeElementHeight(soup, "F8bar", event)
+    changeElementHeight(soup, "F7bar", event)
+    
+    # Must be the last call!
     svg_image.object = SVG(str(soup))
 
 def update_plot(event):
@@ -81,11 +116,31 @@ int_range_slider = pn.widgets.IntSlider(
 # Bind the slider value to the update_plot function
 int_range_slider.param.watch(update_plot, 'value')
 
+select_widget = pn.widgets.Select(
+    name='Selecione a sujeito',
+    groups={'Imaginado': ['Sujeito01', 'Sujeito02'], 'Falado': ['Sujeito03']}
+)
+
+def callback(event):
+    selected_option = event.obj.value
+    print(options.get(selected_option, 'Invalid option'))
+    return options.get(selected_option, 'Invalid option')
+
+select_widget.param.watch(callback, 'value')
+
+switchLabel = pn.widgets.StaticText(name='Visão geral', value='')
+switch = pn.widgets.Switch(name='Visão geral')
+
+
+# Bind the select value to the update_plot function
+#select.param.watch(update_plot, 'value')
+
 dashboard = pn.Row(
     svg_image, 
     pn.Column(
-        int_range_slider, 
-        plot_pane
+        pn.Row(int_range_slider, select_widget),
+        plot_pane,
+        pn.Row(switchLabel, switch)
         ), 
     sizing_mode='stretch_width')
 
