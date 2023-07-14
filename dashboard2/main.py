@@ -6,61 +6,29 @@ from IPython.display import SVG
 import plotly.subplots as sp
 import plotly.graph_objects as go
 
-sensorsTags = [
-       "FP1","FP2",
-       "F3", "F4", "F7", "F8", "FZ",
-       "A1","A2","T3","T4","C3","C4","CZ",
-       "T5","T6","P3","P4","PZ",
-       "O1","O2"
-       ]
-sensorsColors = [
-    "#FF3C00",  # Vivid Orange
-    "#FF9700",  # Bright Orange
-    "#FFD300",  # Sunflower Yellow
-    "#FF4D6E",  # Coral Pink
-    "#FF66B2",  # Bubblegum Pink
-    "#FF8AC3",  # Light Pink
-    "#FF00D8",  # Magenta
-    "#6A00FF",  # Vivid Purple
-    "#A050FF",  # Lavender Purple
-    "#FFA6FF",  # Cotton Candy
-    "#00C4FF",  # Sky Blue
-    "#00E6FF",  # Aqua Blue
-    "#00FFD4",  # Mint Green
-    "#1AFFB5",  # Turquoise
-    "#00FF89",  # Neon Green
-    "#00FF00",  # Lime Green
-    "#FFFF33",  # Bright Yellow
-    "#F9FF66",  # Lemon Yellow
-    "#FF9F00",  # Amber
-    "#FF7733",  # Coral Orange
-    "#FFAF40"   # Peach
-]
+from data import Dashdata
 
-subjectsNamesAndCodes = {
-    'Sujeito01': '1',
-    'Sujeito02': '2',
-    'Sujeito03': '3'
-}
-
-sensorToColorRelationship = dict(zip(sensorsTags, sensorsColors))
+ddata = Dashdata()
 
 # Create the line plot using Plotly graph objects
-num_lines = 3  # Number of lines to plot
+subject = 1  # Number of lines to plot
 
 # Create the SVG pane
-svg_content = open("brain.svg").read()
-svg_image = pn.pane.SVG(SVG(svg_content), width=600, height=600)
+svg_image = pn.pane.SVG(SVG(ddata.brainSvgImage), width=600, height=600)
 
-def readData(seed, num_lines):
+def readData(subject, dataset):
     lines = []
-    for _ in range(num_lines):
-        x = np.random.rand(seed)
-        y = np.random.rand(seed)
-        lines.append((x, y))
+    lines.append(dataset.iloc[[subject]]["F3"].values[0])
+    lines.append(dataset.iloc[[subject]]["F3"].values[0])
+    lines.append(dataset.iloc[[subject]]["F4"].values[0])
+    lines.append(dataset.iloc[[subject]]["C3"].values[0])
+    lines.append(dataset.iloc[[subject]]["C4"].values[0])
+    lines.append(dataset.iloc[[subject]]["P3"].values[0])
+    lines.append(dataset.iloc[[subject]]["C4"].values[0])
+        
     return lines
 
-lines = readData(100, num_lines)
+lines = readData(subject, ddata.dataframe)
 
 
 def changeElementHeight(soup, element_id, new_height):
@@ -71,7 +39,7 @@ def changeElementHeight(soup, element_id, new_height):
 def paintSensor(soup, sensorsTags):
     element = soup.find(id=sensorsTags)
     if element is not None:
-        color = sensorToColorRelationship[sensorsTags]
+        color = ddata.sensorToColorRelationship[sensorsTags]
         element["style"] = f'fill:{color}'
 
 def updateBrainFigure(event, svg_image):
@@ -133,14 +101,12 @@ def updateBrainFigure(event, svg_image):
     svg_image.object = SVG(str(soup))
 
 def update_plot(event):
-    num_lines = 3  # Number of lines to plot
-    lines = readData(event.new, num_lines)
+    lines = readData(event.new, ddata.dataframe)
 
-    fig = sp.make_subplots(rows=num_lines, cols=1, subplot_titles=[f'Line {i+1}' for i in range(num_lines)])
+    fig = sp.make_subplots(rows=len(lines), cols=1, subplot_titles=[f'Line {i+1}' for i in range(len(lines))])
 
     for i, line in enumerate(lines):
-        x, y = line
-        fig.add_trace(go.Scatter(x=x, y=y, mode='lines'), row=i+1, col=1)
+        fig.add_trace(go.Scatter(y=line, mode='lines'), row=i+1, col=1)
 
     fig.update_layout(height=600, width=800, title='Line Plots')
     plot_pane.object = fig
@@ -148,11 +114,10 @@ def update_plot(event):
     # Change the "fill" attribute in the in-memory SVG representation
     updateBrainFigure(event.new, svg_image)
 
-fig = sp.make_subplots(rows=num_lines, cols=1, subplot_titles=[f'Line {i+1}' for i in range(num_lines)])
+fig = sp.make_subplots(rows=len(lines), cols=1, subplot_titles=[f'Line {i+1}' for i in range(len(lines))])
 
 for i, line in enumerate(lines):
-    x, y = line
-    fig.add_trace(go.Scatter(x=x, y=y, mode='lines'), row=i+1, col=1)
+    fig.add_trace(go.Scatter(y=line, mode='lines'), row=i+1, col=1)
 
 fig.update_layout(height=600, width=800, title='Line Plots')
 
@@ -168,13 +133,16 @@ intRangeSliderWidget.param.watch(update_plot, 'value')
 
 selectWidget = pn.widgets.Select(
     name='Selecione a sujeito',
-    groups={'Imaginado': ['Sujeito01', 'Sujeito02'], 'Falado': ['Sujeito03']}
+    groups=ddata.subjectsNamesAndCodes
 )
 
 def selectData(event):
     selected_option = event.obj.value
-    print(subjectsNamesAndCodes.get(selected_option, 'Invalid option'))
-    return subjectsNamesAndCodes.get(selected_option, 'Invalid option')
+    
+    ## Do something
+    
+    
+    return selected_option
 
 selectWidget.param.watch(selectData, 'value')
 
