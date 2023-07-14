@@ -1,4 +1,5 @@
 import panel as pn
+import numpy as np
 import plotly.subplots as sp
 from bs4 import BeautifulSoup
 from IPython.display import SVG
@@ -72,15 +73,29 @@ class Dashboard():
             color = self.ddata.sensorToColorRelationship[sensorsTags]
             element["style"] = f'fill:{color}'
             
-    def updateBrainFigure(self, event, svg_image, lines):
-        soup = BeautifulSoup(svg_image.object.data, "xml")
+    def calculate_total_energy(self, values):
+        squared_values = np.square(values)       # Square each value
+        sum_of_squares = np.sum(squared_values)  # Sum up the squared values
+        total_energy = np.sqrt(sum_of_squares)   # Take the square root
+    
+        return total_energy
+            
+    def updateBrainFigure(self, event, lines):
         
+        # Loads the SVG
+        soup = BeautifulSoup(self.ddata.brainSvgImage, "xml")
+        
+        # Iterates over all available sensors
         for i, line in enumerate(lines):
+            
+            # Change sensor color
             self._paintSensor(soup, line[0])
-            self._changeElementHeight(soup, line[0] +"bar", event)
+            
+            # Change sensor energy height
+            self._changeElementHeight(soup, line[0] +"bar", 10 * self.calculate_total_energy(line[1]))
             
         # Must be the last call!
-        svg_image.object = SVG(str(soup))
+        self.svg_image.object = SVG(str(soup))
         
     def _update_plot(self, event):
         lines = []
@@ -112,7 +127,7 @@ class Dashboard():
         self.plot_pane.object = fig
 
         # Refresh the Svg UI
-        self.updateBrainFigure(event.new, self.svg_image, lines)
+        self.updateBrainFigure(event.new, lines)
         
         return fig
 
