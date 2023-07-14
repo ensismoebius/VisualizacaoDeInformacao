@@ -1,13 +1,6 @@
-import panel as pn
 import numpy as np
-from bs4 import BeautifulSoup
-from IPython.display import SVG
-
-import plotly.subplots as sp
-import plotly.graph_objects as go
-
-from scipy.io import loadmat
 import pandas as pd
+from scipy.io import loadmat
 
 class Dashdata:
     def __init__(self):

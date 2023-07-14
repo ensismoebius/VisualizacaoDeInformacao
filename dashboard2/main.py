@@ -1,51 +1,59 @@
 import panel as pn
-import numpy as np
+import plotly.subplots as sp
 from bs4 import BeautifulSoup
 from IPython.display import SVG
-
-import plotly.subplots as sp
 import plotly.graph_objects as go
 
 from data import Dashdata
 
-class Dashboard(pn.Row):
+class Dashboard():
     def __init__(self):
         # Data container
         self.ddata = Dashdata()
         
-        # Create the SVG pane
+        # Create the SVG pane widget
         self.svg_image = pn.pane.SVG(
             SVG(self.ddata.brainSvgImage), 
             width=600, 
             height=600)
         
-        # Create the slider
-        intRangeSliderWidget = pn.widgets.IntSlider(
-            name='Integer Range Slider',
-            start=0, end=10000, value=0, step=1)
+        ########################
+        ### Widgets creation ###
+        ########################
         
-        # Create the Plotly pane
-        plot_pane = pn.pane.Plotly()
+        # Create the Plotly pane widget
+        self.plot_pane = pn.pane.Plotly()
         
-        # Bind the slider value to the update_plot function
-        intRangeSliderWidget.param.watch(update_plot, 'value')
+        # Create the slider widget
+        self.intRangeSliderWidget = pn.widgets.IntSlider(name='Integer Range Slider', start=0, end=10, value=0, step=1)
         
-        selectWidget = pn.widgets.Select(
-            name='Selecione a sujeito',
-            groups=ddata.subjectsNamesAndCodes
-        )
+        # Create the selection widget
+        self.selectWidget = pn.widgets.Select(name='Selecione a sujeito', groups=self.ddata.subjectsNamesAndCodes)
+
+        # Create a label for the switch widget
+        self.switchLabelWidget = pn.widgets.StaticText(name='Visão geral', value='')
         
-        selectWidget.param.watch(self._selectData, 'value')
+        # Create the switch widget
+        self.switchWidget = pn.widgets.Switch(name='Visão geral')
+
+        ############################
+        ### Event handle binding ###
+        ############################
+
+        # Bind the widgets to its respective event handler
+        self.intRangeSliderWidget.param.watch(self._update_plot, 'value')
+        self.selectWidget.param.watch(self._selectData, 'value')
         
-        switchLabelWidget = pn.widgets.StaticText(name='Visão geral', value='')
-        switchWidget = pn.widgets.Switch(name='Visão geral')
+        #######################
+        ### Layout assembly ###
+        #######################
         
-        self = pn.Row(
-            svg_image, 
+        self.layout = pn.Row(
+            self.svg_image, 
             pn.Column(
-                pn.Row(intRangeSliderWidget, selectWidget),
-                plot_pane,
-                pn.Row(switchLabelWidget, switchWidget)
+                pn.Row(self.intRangeSliderWidget, self.selectWidget),
+                self.plot_pane,
+                pn.Row(self.switchLabelWidget, self.switchWidget)
                 ), 
             sizing_mode='stretch_width')
 
@@ -53,227 +61,60 @@ class Dashboard(pn.Row):
         selected_option = event.obj.value
         return selected_option
         
-    def _changeElementHeight(soup, element_id, new_height):
+    def _changeElementHeight(self, soup, element_id, new_height):
         element = soup.find(id=element_id)
         if element is not None:
             element['height'] = str(new_height/1000)
 
-    def _paintSensor(soup, sensorsTags):
+    def _paintSensor(self, soup, sensorsTags):
         element = soup.find(id=sensorsTags)
         if element is not None:
-            color = ddata.sensorToColorRelationship[sensorsTags]
+            color = self.ddata.sensorToColorRelationship[sensorsTags]
             element["style"] = f'fill:{color}'
             
-    def updateBrainFigure(event, svg_image):
+    def updateBrainFigure(self, event, svg_image, lines):
         soup = BeautifulSoup(svg_image.object.data, "xml")
         
-        paintSensor(soup, "FP1")
-        paintSensor(soup, "FP2")
-        
-        paintSensor(soup, "F3")
-        paintSensor(soup, "F4")
-        paintSensor(soup, "F7")
-        paintSensor(soup, "F8")
-        paintSensor(soup, "FZ")
-        
-        paintSensor(soup, "A1")
-        paintSensor(soup, "A2")
-        paintSensor(soup, "T3") 
-        paintSensor(soup, "T4") 
-        paintSensor(soup, "C3") 
-        paintSensor(soup, "C4") 
-        paintSensor(soup, "CZ")
-        
-        paintSensor(soup, "T5")
-        paintSensor(soup, "T6")
-        paintSensor(soup, "P3")
-        paintSensor(soup, "P4")
-        paintSensor(soup, "PZ")
-        
-        paintSensor(soup, "O1")
-        paintSensor(soup, "O2")
-        
-        changeElementHeight(soup, "FP1bar", event)
-        changeElementHeight(soup, "FP2bar", event)
-
-        changeElementHeight(soup, "F3bar", event)
-        changeElementHeight(soup, "F4bar", event)
-        changeElementHeight(soup, "F7bar", event)
-        changeElementHeight(soup, "F8bar", event)
-        changeElementHeight(soup, "FZbar", event)
-        
-        changeElementHeight(soup, "A1bar", event)
-        changeElementHeight(soup, "A2bar", event)
-        changeElementHeight(soup, "T3bar", event) 
-        changeElementHeight(soup, "T4bar", event) 
-        changeElementHeight(soup, "C3bar", event) 
-        changeElementHeight(soup, "C4bar", event) 
-        changeElementHeight(soup, "CZbar", event)
-        
-        changeElementHeight(soup, "T5bar", event)
-        changeElementHeight(soup, "T6bar", event)
-        changeElementHeight(soup, "P3bar", event)
-        changeElementHeight(soup, "P4bar", event)
-        changeElementHeight(soup, "PZbar", event)
-        
-        changeElementHeight(soup, "O1bar", event)
-        changeElementHeight(soup, "O2bar", event)
-        
+        for i, line in enumerate(lines):
+            self._paintSensor(soup, line[0])
+            self._changeElementHeight(soup, line[0] +"bar", event)
+            
         # Must be the last call!
         svg_image.object = SVG(str(soup))
         
-    def update_plot(event):
+    def _update_plot(self, event):
         lines = []
         
-        for sensor in ddata.sensorToColorRelationship:
+        # Extract data to be plot
+        for sensor in self.ddata.sensorToColorRelationship:
             try:
-                lines.append(ddata.dataframe.iloc[[event.new]][sensor].values[0])
+                # Sensor name + signal for example: (F3, 12121212112)
+                lines.append((sensor, self.ddata.dataframe.iloc[[event.new]][sensor].values[0]))
             except Exception:
                 pass
 
+        # Create the nned subplots
         fig = sp.make_subplots(rows=len(lines), cols=1)
 
+        # Plots data
         for i, line in enumerate(lines):
-            fig.add_trace(go.Scatter(y=line, mode='lines'), row=i+1, col=1)
+            
+            # Retrieves the color of the sensor
+            color = self.ddata.sensorToColorRelationship[line[0]]
+            
+            fig.add_trace(
+                # Plots the line with the corresponding color and name of the sensor 
+                go.Scatter(y=line[1], mode='lines', name=line[0], line=dict(color=color)),
+            row=i+1, col=1)
 
+        # Refresh the plots UI
         fig.update_layout(height=600, width=800, title='Line Plots')
-        plot_pane.object = fig
+        self.plot_pane.object = fig
 
-        # Change the "fill" attribute in the in-memory SVG representation
-        updateBrainFigure(event.new, svg_image)
+        # Refresh the Svg UI
+        self.updateBrainFigure(event.new, self.svg_image, lines)
         
         return fig
 
-
-ddata = Dashdata()
-
-# Create the SVG pane
-svg_image = pn.pane.SVG(SVG(ddata.brainSvgImage), width=600, height=600)
-
-def changeElementHeight(soup, element_id, new_height):
-    element = soup.find(id=element_id)
-    if element is not None:
-        element['height'] = str(new_height/1000)
-
-def paintSensor(soup, sensorsTags):
-    element = soup.find(id=sensorsTags)
-    if element is not None:
-        color = ddata.sensorToColorRelationship[sensorsTags]
-        element["style"] = f'fill:{color}'
-
-def updateBrainFigure(event, svg_image):
-    soup = BeautifulSoup(svg_image.object.data, "xml")
-    
-    paintSensor(soup, "FP1")
-    paintSensor(soup, "FP2")
-    
-    paintSensor(soup, "F3")
-    paintSensor(soup, "F4")
-    paintSensor(soup, "F7")
-    paintSensor(soup, "F8")
-    paintSensor(soup, "FZ")
-    
-    paintSensor(soup, "A1")
-    paintSensor(soup, "A2")
-    paintSensor(soup, "T3") 
-    paintSensor(soup, "T4") 
-    paintSensor(soup, "C3") 
-    paintSensor(soup, "C4") 
-    paintSensor(soup, "CZ")
-    
-    paintSensor(soup, "T5")
-    paintSensor(soup, "T6")
-    paintSensor(soup, "P3")
-    paintSensor(soup, "P4")
-    paintSensor(soup, "PZ")
-    
-    paintSensor(soup, "O1")
-    paintSensor(soup, "O2")
-    
-    changeElementHeight(soup, "FP1bar", event)
-    changeElementHeight(soup, "FP2bar", event)
-
-    changeElementHeight(soup, "F3bar", event)
-    changeElementHeight(soup, "F4bar", event)
-    changeElementHeight(soup, "F7bar", event)
-    changeElementHeight(soup, "F8bar", event)
-    changeElementHeight(soup, "FZbar", event)
-    
-    changeElementHeight(soup, "A1bar", event)
-    changeElementHeight(soup, "A2bar", event)
-    changeElementHeight(soup, "T3bar", event) 
-    changeElementHeight(soup, "T4bar", event) 
-    changeElementHeight(soup, "C3bar", event) 
-    changeElementHeight(soup, "C4bar", event) 
-    changeElementHeight(soup, "CZbar", event)
-    
-    changeElementHeight(soup, "T5bar", event)
-    changeElementHeight(soup, "T6bar", event)
-    changeElementHeight(soup, "P3bar", event)
-    changeElementHeight(soup, "P4bar", event)
-    changeElementHeight(soup, "PZbar", event)
-    
-    changeElementHeight(soup, "O1bar", event)
-    changeElementHeight(soup, "O2bar", event)
-    
-    # Must be the last call!
-    svg_image.object = SVG(str(soup))
-
-def update_plot(event):
-    lines = []
-    
-    for sensor in ddata.sensorToColorRelationship:
-        try:
-            lines.append(ddata.dataframe.iloc[[event.new]][sensor].values[0])
-        except Exception:
-            pass
-
-    fig = sp.make_subplots(rows=len(lines), cols=1)
-
-    for i, line in enumerate(lines):
-        fig.add_trace(go.Scatter(y=line, mode='lines'), row=i+1, col=1)
-
-    fig.update_layout(height=600, width=800, title='Line Plots')
-    plot_pane.object = fig
-
-    # Change the "fill" attribute in the in-memory SVG representation
-    updateBrainFigure(event.new, svg_image)
-    
-    return fig
-
-intRangeSliderWidget = pn.widgets.IntSlider(
-    name='Integer Range Slider',
-    start=0, end=10000, value=0, step=1)
-
-
-# Create the Plotly pane
-plot_pane = pn.pane.Plotly()
-
-# Bind the slider value to the update_plot function
-intRangeSliderWidget.param.watch(update_plot, 'value')
-
-selectWidget = pn.widgets.Select(
-    name='Selecione a sujeito',
-    groups=ddata.subjectsNamesAndCodes
-)
-
-def selectData(event):
-    selected_option = event.obj.value
-    return selected_option
-
-selectWidget.param.watch(selectData, 'value')
-
-switchLabelWidget = pn.widgets.StaticText(name='Visão geral', value='')
-switchWidget = pn.widgets.Switch(name='Visão geral')
-
-dashboard = pn.Row(
-    svg_image, 
-    pn.Column(
-        pn.Row(intRangeSliderWidget, selectWidget),
-        plot_pane,
-        pn.Row(switchLabelWidget, switchWidget)
-        ), 
-    sizing_mode='stretch_width')
-
-# Launch the dashboard with hot reloading enabled
-dashboard.servable()
+dashboard = Dashboard()
+dashboard.layout.servable()
