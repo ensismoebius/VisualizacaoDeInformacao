@@ -416,7 +416,7 @@
      x="189.58516"
      y="192.30313">A2</tspan></text>
     <rect
-   style="fill:#000000"
+   style="fill:none"
    id="F8bar"
    width="0.77472633"
    height="1.4039764"
@@ -425,7 +425,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="F7bar"
    width="0.77472633"
    height="1.4039764"
@@ -434,7 +434,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="F3bar"
    width="0.77472633"
    height="1.4039764"
@@ -443,7 +443,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="F4bar"
    width="0.77472633"
    height="1.4039764"
@@ -452,7 +452,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="FZbar"
    width="0.77472633"
    height="1.4039764"
@@ -461,7 +461,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="A1bar"
    width="0.77472633"
    height="1.4039764"
@@ -470,7 +470,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="A2bar"
    width="0.77472633"
    height="1.4039764"
@@ -479,7 +479,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="C3bar"
    width="0.77472633"
    height="1.4039764"
@@ -488,7 +488,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="C4bar"
    width="0.77472633"
    height="1.4039764"
@@ -497,7 +497,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="CZbar"
    width="0.77472633"
    height="1.4039764"
@@ -506,7 +506,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="T3bar"
    width="0.77472633"
    height="1.4039764"
@@ -515,7 +515,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="T4bar"
    width="0.77472633"
    height="1.4039764"
@@ -524,7 +524,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="T5bar"
    width="0.77472633"
    height="1.4039764"
@@ -533,7 +533,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="T6bar"
    width="0.77472633"
    height="1.4039764"
@@ -542,7 +542,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="P3bar"
    width="0.77472633"
    height="1.4039764"
@@ -551,7 +551,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="P4bar"
    width="0.77472633"
    height="1.4039764"
@@ -560,7 +560,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="PZbar"
    width="0.77472633"
    height="1.4039764"
@@ -569,7 +569,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="O1bar"
    width="0.77472633"
    height="1.4039764"
@@ -578,7 +578,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="O2bar"
    width="0.77472633"
    height="1.4039764"
@@ -587,7 +587,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="FP1bar"
    width="0.77472633"
    height="1.4039764"
@@ -596,7 +596,7 @@
    inkscape:transform-center-x="0.0028911452"
    inkscape:transform-center-y="-0.70185482"
    transform="scale(-1)" /><rect
-   style="fill:#000000"
+   style="fill:none"
    id="FP2bar"
    width="0.77472633"
    height="1.4039764"

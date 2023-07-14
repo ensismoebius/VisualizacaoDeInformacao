@@ -66,6 +66,7 @@ class Dashboard():
         element = soup.find(id=element_id)
         if element is not None:
             element['height'] = str(new_height/1000)
+            element["style"] = 'fill:#000000'
 
     def _paintSensor(self, soup, sensorsTags):
         element = soup.find(id=sensorsTags)
@@ -92,7 +93,7 @@ class Dashboard():
             self._paintSensor(soup, line[0])
             
             # Change sensor energy height
-            self._changeElementHeight(soup, line[0] +"bar", 10 * self.calculate_total_energy(line[1]))
+            self._changeElementHeight(soup, line[0] +"bar", 5 * self.calculate_total_energy(line[1]))
             
         # Must be the last call!
         self.svg_image.object = SVG(str(soup))
