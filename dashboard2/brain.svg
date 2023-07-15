@@ -18,8 +18,8 @@
      borderopacity="1.0"
      id="namedview642"
      inkscape:current-layer="layer1"
-     inkscape:cx="76.400577"
-     inkscape:cy="104.74273"
+     inkscape:cx="83.383425"
+     inkscape:cy="141.29999"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:pagecheckerboard="0"
@@ -41,11 +41,11 @@
    d="m 150.56008,221.56336 c -13.49956,0 -24.44312,-12.99289 -24.44312,-29.02044 10e-6,-16.02754 10.94356,-29.02043 24.44312,-29.02043 0.15062,20.70775 0.70589,39.96928 0,58.04087 z"
    id="path217-9"
    sodipodi:nodetypes="cscc"
-   style="fill:#f5f5f5;stroke:#808080;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:2.9178" /><path
+   style="fill:#000080;stroke:none;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:2.9178" /><path
    d="m 153.38873,221.47041 c 13.49956,0 24.44312,-12.99288 24.44311,-29.02043 0,-16.02755 -10.94355,-29.02044 -24.44311,-29.02044 -0.15062,20.70776 -0.70589,39.96929 0,58.04087 z"
    id="path217-3-2"
    sodipodi:nodetypes="cscc"
-   style="fill:#f5f5f5;stroke:#808080;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:2.9178" /><ellipse
+   style="fill:#000080;stroke:none;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:2.9178" /><ellipse
    cx="139.40439"
    cy="174.91855"
    id="F3"
@@ -198,7 +198,7 @@
    d="m 152.15284,160.70943 1.99296,1.99296 c 0.14211,0.14211 0.14211,0.37093 0,0.51304 -1.7699,0.0603 -2.63268,-2.7e-4 -4.49896,0 -0.14212,-0.14211 -0.14212,-0.37093 0,-0.51304 l 1.99296,-1.99296 c 0.14211,-0.14211 0.37092,-0.14211 0.51304,0 z"
    id="rect2149-1"
    sodipodi:nodetypes="ssccsss"
-   style="fill:#f5f5f5;stroke:#000000;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:2.9178" /><text
+   style="fill:#800080;stroke:none;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:2.9178" /><text
    id="text982"
    style="font-size:1.97109px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.123193"
    x="138.80315"

@@ -4,6 +4,7 @@ import plotly.subplots as sp
 from bs4 import BeautifulSoup
 from IPython.display import SVG
 import plotly.graph_objects as go
+from panel.template import DarkTheme
 
 from data import Dashdata
 
@@ -80,16 +81,21 @@ class Dashboard():
         #######################
         ### Layout assembly ###
         #######################
-
-        self.layout = pn.Row(
-            self.svg_image,
-            pn.Column(
-                pn.Row(self.selectModalityWidget, self.selectStimuliWidget),
-                pn.Row(self.selectArtefactWidget, self.selectSubjectWidget),
-                self.plot_pane,
-                pn.Row(self.switchLabelWidget, self.switchWidget)
-            ),
-            sizing_mode='stretch_width')
+        
+        self.layout = pn.template.MaterialTemplate(title='Visualização de ECG', theme=DarkTheme)
+        
+        self.layout.main.append(
+            pn.Row(
+                self.svg_image,
+                pn.Column(
+                    pn.Row(self.selectModalityWidget, self.selectStimuliWidget),
+                    pn.Row(self.selectArtefactWidget, self.selectSubjectWidget),
+                    self.plot_pane,
+                    pn.Row(self.switchLabelWidget, self.switchWidget)
+                ),
+                sizing_mode='stretch_width'
+            )
+        )
 
     ############################
     ### Callbacks definition ###
@@ -102,21 +108,21 @@ class Dashboard():
     def _modalitySelected(self, event):
         self.selectedModality = event.new
         if (self.selectedModality != -1) and (self.selectedEstimuli != -1):
-            self.subjects = self.filterSignals(
+            self.subjects = self._filterSignals(
                 self.selectedModality, self.selectedEstimuli, self.selectedArtifact)
             self.selectSubjectWidget.options = self.subjects.index.tolist()
 
     def _estimuliSelected(self, event):
         self.selectedEstimuli = event.new
         if (self.selectedModality != -1) and (self.selectedEstimuli != -1):
-            self.subjects = self.filterSignals(
+            self.subjects = self._filterSignals(
                 self.selectedModality, self.selectedEstimuli, self.selectedArtifact)
             self.selectSubjectWidget.options = self.subjects.index.tolist()
 
     def _artifactSelected(self, event):
         self.selectedArtifact = event.new
         if (self.selectedModality != -1) and (self.selectedArtifact != -1):
-            self.subjects = self.filterSignals(
+            self.subjects = self._filterSignals(
                 self.selectedModality, self.selectedEstimuli, self.selectedArtifact)
             self.selectSubjectWidget.options = self.subjects.index.tolist()
 
@@ -169,26 +175,17 @@ class Dashboard():
                     row=i+1, col=1)
 
         # Refresh the plots UI
-        fig.update_layout()
+        fig.update_layout(template='plotly_dark')
         self.plot_pane.object = fig
 
         # Refresh the Svg UI
-        self.updateBrainFigure(subjectNumber, lines)
+        self._updateBrainFigure(subjectNumber, lines)
 
         return fig
 
     ##########################
     ### Methods definition ###
     ##########################
-
-    def print_subjects_by_group(self):
-        subjects_by_group = self.ddata.extract_subjects_by_group()
-
-        for group, subjects in subjects_by_group.items():
-            modality, artifacts = group
-            print(f"Modalidade: {modality}, Artefatos: {artifacts}")
-            print(subjects)
-            print()
 
     def _changeElementHeight(self, soup, element_id, new_height):
         element = soup.find(id=element_id)
@@ -202,14 +199,14 @@ class Dashboard():
             color = self.ddata.sensorToColorRelationship[sensorsTags]
             element["style"] = f'fill:{color}'
 
-    def calculate_total_energy(self, values):
+    def _calculate_total_energy(self, values):
         squared_values = np.square(values)       # Square each value
         sum_of_squares = np.sum(squared_values)  # Sum up the squared values
         total_energy = np.sqrt(sum_of_squares)   # Take the square root
 
         return total_energy
 
-    def updateBrainFigure(self, event, lines):
+    def _updateBrainFigure(self, event, lines):
 
         # Loads the SVG
         soup = BeautifulSoup(self.ddata.brainSvgImage, "xml")
@@ -222,12 +219,12 @@ class Dashboard():
 
             # Change sensor energy height
             self._changeElementHeight(
-                soup, line[0] + "bar", 5 * self.calculate_total_energy(line[1]))
+                soup, line[0] + "bar", 5 * self._calculate_total_energy(line[1]))
 
         # Must be the last call!
         self.svg_image.object = SVG(str(soup))
 
-    def filterSignals(self, modalidade, estimulo, artefato=-1):
+    def _filterSignals(self, modalidade, estimulo, artefato=-1):
 
         print(f'{modalidade}, {estimulo}, {artefato}')
 
