@@ -43,7 +43,7 @@ class Dashboard():
 
         # Create the subject selection widget
         self.selectSubjectWidget = pn.widgets.Select(
-            name='Selecione a sujeito')
+            name='Selecione o sujeito')
 
         # Create the modality selection widget
         self.selectModalityWidget = pn.widgets.Select(
