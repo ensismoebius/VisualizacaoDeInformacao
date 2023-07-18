@@ -17,7 +17,7 @@
 \begin{document}
 	
 	\begin{abstract}
-		Electroencephalogram (EEG) data has inherent complexity, including a large volume, diverse frequencies (e.g., alpha, beta, theta, sigma), and numerous emitting sources (neurons). Additionally, potential electromagnetic interferences from external sources pose challenges during EEG analysis. This work aims to propose effective visualization techniques for EEG data, drawing insights from recent research on EEG visualization. The goal is to create informative visualizations that aid in EEG research by showing detailed representations of the data without the use of misleading gradients. The visualization will include interactive features for subject and stimulus selection, providing a comprehensive understanding of EEG signals with high-contrast color schemes to enhance perceptual clarity.
+		Electroencephalogram (EEG) data has inherent complexity, including a large volume, diverse frequencies (e.g., $\alpha$, $\beta$, $\theta$, $\sigma$), and numerous emitting sources (neurons). Additionally, potential electromagnetic interferences from external sources pose challenges during EEG analysis. This work aims to propose effective visualization techniques for EEG data, drawing insights from recent research on EEG visualization. The goal is to create informative visualizations that aid in EEG research by showing detailed representations of the data without the use of misleading gradients. The visualization will include interactive features for subject and stimulus selection, providing a comprehensive understanding of EEG signals with high-contrast color schemes to enhance perceptual clarity.
 	\end{abstract}
 	
 	\maketitle
@@ -29,12 +29,12 @@
 	
 		\par To demonstrate the proposed visualization technique, EEG data was acquired from an existing dataset. The chosen dataset is the "Open access database of EEG signals recorded during imagined speech" \cite{10.1117/12.2255697}. This dataset contains EEG recordings during the imagined pronunciation of vowels and commands, as well as EEG and audio recordings during the actual pronunciation. The dataset includes recordings from 15 Argentinian volunteers between the ages of 24 and 28, with an equal representation of males and females \cite{10.1117/12.2255697}.\newline
 	
-		\par As shown in Figure \ref{fig:sistema10-20}, the data was acquired using the 10-20 system \cite{sistema10-20} which consist of electrodes spaced by 20\% of the head size and a margin of 10\% in relation to \textit{nasion}, \textit{inion} and to the preauricular point. In this specific database only the sensors $F3$, $F4$, $C3$, $C4$, $P3$ and $P4$ was used.
+		\par As shown in Figure \ref{fig:sistema10-20}, the data was acquired using the 10-20 system \cite{sistema10-20} which consist of electrodes spaced by 20\% of the head size and a margin of 10\% in relation to \textit{nasion}, \textit{inion} and to the preauricular point. In this specific database only the electrodes $F3$, $F4$, $C3$, $C4$, $P3$ and $P4$ was used.
 		
 		\begin{figure}[h]
 			\centering
+			\caption{system 10-20: The electrodes are evenly separated across the scalp of the subject. The A1 electrode is the preauricular point. Source: \cite{sistema10-20}}
 			\includegraphics[width=\linewidth]{../presentation/images/sistema10-20}
-			\caption{system 10-20: The electrodes are evenly separated across the scalp of the subject. The A1 sensor is the preauricular point. Source: \cite{sistema10-20}}
 			\label{fig:sistema10-20}
 		\end{figure}
 		
@@ -43,7 +43,8 @@
 	\section{Database Structure}
 		\par Each row in the dataset corresponds to a subject-stimuli-modality set, and the data is arranged as follows: EEG signals from different electrodes, modalities (imagined or pronounced), and stimulus codes representing different categories of stimuli (e.g., letters and commands). The modalities distinguish between imagined and pronounced speech, while the stimulus codes identify specific categories of stimuli. Figure \ref{fig:visu04} shows a sample of the initial rows in the database, and Figure \ref{fig:visu05} displays the last rows.\newline
 		
-		\par Each line consist in a series of numbers organized as follows:
+		\par Being F3, F4, C3, C4, P3 and P4 the name of the electrodes in the 10-20 system, each line consist in a series of numbers organized as follows:
+		
 		\begin{itemize}
 			\item F3 - 0:4095
 			\item F4 - 4096:8191
@@ -56,19 +57,19 @@
 			\item artifact - 24578:24578
 		\end{itemize}
 	
-		\par Modality can be 1 for imagined speech or 2 for pronounced speech. Stimuli assumes 1: A, 2: E, 3: I, 4:O and 5:U and 6:\textit{Arriba}, 7: \textit{Abajo}, 8: \textit{Adelante}, 9: \textit{Atrás}, 10: \textit{Derecha}, 11: \textit{Izquierda}.
+		\par Modality can be 1 for imagined speech or 2 for pronounced speech. Stimuli assumes 1: A, 2: E, 3: I, 4:O and 5:U and 6:\textit{Arriba}, 7: \textit{Abajo}, 8: \textit{Adelante}, 9: \textit{Atrás}, 10: \textit{Derecha}, 11: \textit{Izquierda} finally artifact assumes 1 for no eye blinking and 2 otherwise.
 		
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=\linewidth]{../presentation/images/visu04}
 			\caption{Sample of initial rows in the EEG database}
+			\includegraphics[width=\linewidth]{../presentation/images/visu04}
 			\label{fig:visu04}
 		\end{figure}
 		
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=.9\linewidth]{../presentation/images/visu05}
 			\caption{Sample of last rows in the EEG database}
+			\includegraphics[width=.9\linewidth]{../presentation/images/visu05}
 			\label{fig:visu05}
 		\end{figure}
 	
@@ -77,8 +78,8 @@
 	
 		\begin{figure}[h]
 			\centering
+			\caption{Pre-processed and Grouped EEG Data: Note the columns named after its respective source (i.e., the electrodes) and the last three ones "modalidade," "Estímulo," and "Artefatos," which are, respectively, the modality, stimuli and artifacts.}
 			\includegraphics[width=\linewidth]{../presentation/images/visu06}
-			\caption{Pre-processed and Grouped EEG Data: Note the columns named after its respective source (i.e., the sensors) and the last three ones "modalidade," "Estímulo," and "Artefatos," which are, respectively, the modality, stimuli and artifacts.}
 			\label{fig:visu06}
 		\end{figure}
 	
@@ -90,18 +91,18 @@
 		
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=\linewidth]{../presentation/images/epviz00}
 				\caption{EPviz - Line graph visualization}
+				\includegraphics[width=\linewidth]{../presentation/images/epviz00}
 				\label{fig:epviz00}
 			\end{figure}
 	
 		\subsection{Visualization Inspired by \cite{9098189}}
-			\par Another relevant methodology uses topological color maps to indicate signal energy at each sensor. This visualization approach shown in Figure \ref{fig:visu01} provides an informative representation of regions with intense brain activity during the corresponding time period. However, the view makes a interpolation of measured values leading to potential misinterpretations of signal intensities according to gradients.
+			\par Another relevant methodology uses topological color maps to indicate signal energy at each electrode. This visualization approach shown in Figure \ref{fig:visu01} provides an informative representation of regions with intense brain activity during the corresponding time period. However, the view makes a interpolation of measured values leading to potential misinterpretations of signal intensities according to gradients.
 			
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=\linewidth]{../presentation/images/visu01}
 				\caption{Topological visualization}
+				\includegraphics[width=\linewidth]{../presentation/images/visu01}
 				\label{fig:visu01}
 			\end{figure}
 	
@@ -110,8 +111,8 @@
 			
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=\linewidth]{../presentation/images/visu02}
 				\caption{Topological visualization over time}
+				\includegraphics[width=\linewidth]{../presentation/images/visu02}
 				\label{fig:visu02}
 			\end{figure}
 	
@@ -120,15 +121,15 @@
 	
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=\linewidth]{../presentation/images/g3714}
 			\caption{Specific view of the proposed visualization}
+			\includegraphics[width=\linewidth]{../presentation/images/g3714}
 			\label{fig:g3714}
 		\end{figure}
 		
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=\linewidth]{../presentation/images/g3762}
 			\caption{General view of the proposed visualization}
+			\includegraphics[width=\linewidth]{../presentation/images/g3762}
 			\label{fig:g3762}
 		\end{figure}
 	
@@ -157,25 +158,25 @@
 		
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=\linewidth]{images/screenshot01}
 			\caption{The application screenshot in specific mode: All signals are represented separately.}
+			\includegraphics[width=\linewidth]{images/screenshot01}
 			\label{fig:screenshot01}
 		\end{figure}
 		
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=\linewidth]{images/screenshot02}
 			\caption{The application screenshot in general mode: All signals are represented in a single plot.}
+			\includegraphics[width=\linewidth]{images/screenshot02}
 			\label{fig:screenshot02}
 		\end{figure}
 	
 		\subsection{User interface discussion}
-			\par Focusing on the left side of the visualization: Like is shown in Figure \ref{fig:screenshotleft}, the sensors that are being used are represented by circles with vivid and contrasting colors which matches with its respectively plot on the right side, while the unused sensors are represented only by their names. At the top of each circle, there is a bar representing the corresponding signal's energy captured by that sensor. It is noteworthy that each signal may have different energy levels.
+			\par Focusing on the left side of the visualization: Like is shown in Figure \ref{fig:screenshotleft}, the electrodes that are being used are represented by circles with vivid and contrasting colors which matches with its respectively plot on the right side, while the unused electrodes are represented only by their names. At the top of each circle, there is a bar representing the corresponding signal's energy captured by that electrode. It is noteworthy that each signal may have different energy levels.
 		
 			\begin{figure}[h]
 				\centering
+				\caption{The electrodes and its captured energy are represented by the colored circles and their top bars respectively.}
 				\includegraphics[width=\linewidth]{images/screenshotLeft}
-				\caption{The sensors and its captured energy are represented by the colored circles and their top bars respectively.}
 				\label{fig:screenshotleft}
 			\end{figure}
 		
@@ -183,69 +184,80 @@
 			
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=\linewidth]{images/screenshotTop}
 				\caption{The four selectors of the visualization: "Selecione a modalidade", "Selecione o estímulo", "Selecione o artefato" and "Selecione o sujeito"}
+				\includegraphics[width=\linewidth]{images/screenshotTop}
 				\label{fig:screenshottop}
 			\end{figure}
 		
 			
 		
-			\par The right section (Figure \ref{fig:screenshotright}) displays the plots of the signals captured by the sensors. Each plot has a color matching to its respective sensor, and to avoid misinterpretations, there are labels on the right. This section changes when new filters are set and when the switch "Visão geral" depicted in Figure \ref{fig:screenshotbotton} is changed. Here, it is possible to zoom in on data, hide plots by clicking on labels, and even save the results to a file.
+			\par The right section (Figure \ref{fig:screenshotright}) displays the plots of the signals captured by the electrodes. Each plot has a color matching to its respective electrode, and to avoid misinterpretations, there are labels on the right. This section changes when new filters are set and when the switch "Visão geral" depicted in Figure \ref{fig:screenshotbotton} is changed. Here, it is possible to zoom in on data, hide plots by clicking on labels, and even save the results to a file.
 			
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=\linewidth]{images/screenshotRight}
 				\caption{The right section of the visualization: The signals may be shown separately or in a single plot.}
+				\includegraphics[width=\linewidth]{images/screenshotRight}
 				\label{fig:screenshotright}
 			\end{figure}
 			
 			
 			\begin{figure}[h]
 				\centering
-				\includegraphics{images/screenshotBotton}
 				\caption{This button switches between "General" and "Specific" modes.}
+				\includegraphics{images/screenshotBotton}
 				\label{fig:screenshotbotton}
 			\end{figure}
 		\subsection{Source code}
 		
-			\par The code is designed to load EEG data from a MATLAB file, preprocess it. This visualization uses Panel, Plotly, SciPy, Pandas, BeautifulSoup and NumPy pyhton libraries. The code consists of two main classes: \texttt{Dashdata} and \texttt{Dashboard}.
+			\par This section provides an overview of the most important code excerpts. The full code is available in the repository listed at the end of this document. This visualization utilizes the following Python libraries: Panel, Plotly, SciPy, Pandas, BeautifulSoup, and NumPy. It comprises two main classes: \texttt{Dashdata} and \texttt{Dashboard}.\newline
 			
 			\par The \texttt{Dashdata} class is responsible for loading and processing EEG data. The main tasks of this class are as follows:
-			
-			\lstinputlisting[language=Python]{code/test.py}
-			
 			
 			\begin{itemize}
 				
 				\item{\textbf{loading EEG Data}}: The \texttt{Dashdata} class loads EEG data from a MATLAB file using the \texttt{scipy.io.loadmat} function. The EEG data is stored in a MATLAB struct format, and the class uses \texttt{squeeze\_me} and \texttt{mat\_dtype} options to convert the data into a more usable format.
+	
+				\lstinputlisting[language=Python, caption={Loading a Matlab file}]{code/loadEEGData.py}
 			
-				\item{\textbf{data preprocessing}}: After loading the data, the class creates a Pandas DataFrame called \texttt{dataframe} to store the EEG data. The EEG signals for specific sensors are combined into arrays, and the DataFrame is updated accordingly. This step simplifies data handling and allows easier access to EEG signal data for visualization.
+				\item{\textbf{data preprocessing}}: After loading the data, the class creates a Pandas DataFrame called \texttt{dataframe} to store the EEG data. The EEG signals for specific electrodes are combined into arrays, and the DataFrame is updated accordingly. This step simplifies data handling and allows easier access to EEG signal data for visualization. This is done using the \textit{\_joinIntoArray} function.
 				
-				\item{\textbf{setting up Properties}}: The class sets up properties to store essential information, such as the relationship between EEG sensors and their corresponding colors. This mapping is useful for visualizing EEG signals with different colors representing different sensors.
+				\lstinputlisting[language=Python, caption={This function groups the columns}]{code/dataProcessingFunc.py}
+				
+				\lstinputlisting[language=Python, caption={Grouping the columns}]{code/dataProcessing.py}
+				
+				\item{\textbf{setting up Properties}}: The class sets up properties to store essential information, such as the relationship between EEG electrodes and their corresponding colors. This mapping is useful for visualizing EEG signals with different colors representing different electrodes.
+				
+				\lstinputlisting[language=Python, caption={Color and sensor data}]{code/sensorData.py}
 				
 				\item{\textbf{mapping Modalities, Stimuli, and Artifacts}}: The \texttt{Dashdata} class provides dictionaries to map descriptive names of modalities, stimuli, and artifacts to their respective numeric codes. This mapping facilitates user interaction, as select widgets can be populated with descriptive options.
 				
-				\item{\textbf{loading brain Visualization}}: The class loads an SVG image of the brain, which can be used for visualizing the locations of EEG sensors on the brain. This SVG image is used in the dashboard to enhance the user experience and provide context to the EEG data.
+				\lstinputlisting[language=Python, caption={Dictionaries for widgets}]{code/widgetsDict.py}
+				
+				\item{\textbf{loading brain Visualization}}: The class loads an SVG image of the brain, which serves the purpose of visualizing the locations of EEG electrodes on the brain. Incorporating this SVG image into the dashboard enhances the user experience and offers context to the EEG data. An additional advantage of this approach is that, due to the handcrafted nature of this resource, it can be readily replaced by another SVG image to meet new requirements and demands!
+				
+				\lstinputlisting[language=Python, caption={Loading SVG image}]{code/loadSVG.py}
 			\end{itemize}
 			
 			\par The \texttt{Dashboard} class is designed to create an interactive EEG Data Visualization Dashboard using Panel and Plotly libraries. It utilizes the \texttt{Dashdata} class to access preprocessed EEG and visual elements data.
 			
 			\begin{itemize}
+				\item As aforementioned the SVG image is used to represent the brain. But this representation means nothing if it cannot be modified to reflect the visualization parameters. To do this two functions are used to update this image.
+				
+				\lstinputlisting[language=Python, caption={Functions that updates the SVG image}]{code/SVGFunc.py}
+				
+				
 				\item{\textbf{widgets and UI Layout}} The dashboard creates various widgets for user interaction, such as selects for modalities, stimuli, artifacts, and subjects. Additionally, a switch widget is used to toggle between general and detailed views of the EEG data. The dashboard's layout is arranged using rows and columns to organize the visual elements effectively.
 				
-				\item{\textbf{event handling}} The class defines callback methods to handle user interactions with the widgets. These methods update the visualization based on the user's selections for modalities, stimuli, artifacts, subjects, and the general view toggle. The EEG data is filtered and plotted accordingly to provide an interactive and dynamic visualization experience.
+				\item{\textbf{event handling}} This class defines callback methods to handle user interactions with the widgets. These methods update the visualization based on the user's selections for modalities, stimuli, artifacts, subjects, and the general view toggle. The EEG data is filtered and plotted accordingly to provide an interactive and dynamic visualization experience.
 				
-				\item{\textbf{data visualization}} The dashboard uses Plotly to visualize the EEG data. It creates line plots representing EEG signals for different sensors. Depending on the user's selection, the dashboard can display single-panel or multiple-panel plots. The latter provides a more detailed view of the EEG signals.
+				\item{\textbf{data visualization}} The dashboard uses Plotly to visualize the EEG data. It creates line plots representing EEG signals for different electrodes. Depending on the user's selection, the dashboard can display single-panel or multiple-panel plots. The latter provides a more detailed view of the EEG signals.
 			\end{itemize}
-			
-	\section{Future Work}
-		\par As the research progresses, the proposed visualization will be further developed to display the hierarchical decomposition of captured waves into their respective components ($\alpha$, $\beta$, $\theta$, $\sigma$). Additionally, the visualization will show the categories and classes to which each signal belongs.
 	
+	\section{Conclusion and future work}
+		\par The non-gradient method of displaying data in conjunction with the capacity of data isolation offers more clarity and reduce misinterpretation of the data. But, despite the current state of this visualization being well-rounded, some features may be implemented: the capacity to dynamically load data in other formats, the decomposition of data into its sub-frequencies ($\alpha$, $\beta$, $\theta$, $\sigma$), and a real-time display of EEG. As research progresses, the proposed visualization will be further developed to incorporate these features. 
+
 	\section{Code Repository}
-	\par To access the source code, please visit:\newline \href{https://github.com/ensismoebius/VisualizacaoDeInformacao}{\textbf{https://github.com/ensismoebius/VisualizacaoDeInformacao}}
-	
-	\section{Conclusion}
-		\par This work proposes a novel visualization method for EEG data, incorporating line graphs and energy visualizations with a non-gradient representation of electrode positions in the 10-20 system. The proposed visualization aims to facilitate EEG data analysis and interpretation by offering interactive features for subject and stimulus selection, as well as specific signal exploration. High-contrast colors will be employed to enhance perceptual clarity. Future research will extend the proposed visualization to include hierarchical representations of signal components and their associated categories and classes.
+		\par To access the source code, please visit:\newline \href{https://github.com/ensismoebius/VisualizacaoDeInformacao}{\textbf{https://github.com/ensismoebius/VisualizacaoDeInformacao}}
 	
 	\begin{acks}
 		The author would like to thank the Universidade Estadual Paulista Júlio de Mesquita Filho for its support and resources during this research.

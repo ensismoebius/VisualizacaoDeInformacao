@@ -1,0 +1,15 @@
+def _joinIntoArray(self, start_col, end_col, newColumn, dataframe):
+
+ # Selects the columns to be joined
+ cols_to_join=dataframe.iloc[
+ 	:,start_col:end_col
+ 	].columns
+ 
+ # Convert the columns to numbers
+ dataframe[newColumn] = dataframe[cols_to_join].apply(
+ 	lambda x: np.array(
+ 		pd.to_numeric(x, errors='coerce')
+ 	), axis=1)
+ 
+ # Joins the columns and delete the original ones
+ dataframe.drop(cols_to_join, axis=1, inplace=True)

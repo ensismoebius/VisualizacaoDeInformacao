@@ -1,0 +1,27 @@
+# Function that changes the energy bar height
+# "soup" is the SVG data
+# "element_id" is the id of the energy bar that will be resized
+# "new_height" is the new height of the energy bar
+def _changeElementHeight(self, soup, element_id, new_height):
+ 
+ # Find the element
+ element = soup.find(id=element_id)
+ 
+ # If it exists updates its height and paint it of 
+ # black because initially the bars are transparent
+ if element is not None:
+   element['height'] = str(new_height/1000)
+   element["style"] = 'fill:#000000'
+
+# Function that paint the electrodes in the SVG image
+# "soup" is the SVG data
+# "sensorsTags" is the tag of the electrode to be painted
+def _paintSensor(self, soup, sensorsTags):
+ 
+ # Find the element
+ element = soup.find(id=sensorsTags)
+ 
+ # If it exists updates its color
+ if element is not None:
+   color = self.ddata.sensorToColorRelationship[sensorsTags]
+   element["style"] = f'fill:{color}'

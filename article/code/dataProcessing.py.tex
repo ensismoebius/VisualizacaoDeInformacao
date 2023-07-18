@@ -1,0 +1,15 @@
+# Loads the EEG section into a dataframe
+self.dataframe = pd.DataFrame(mat['EEG'])
+
+# Joins the columns into its respectives electrodes
+self._joinIntoArray(0, 4096, 'F3', self.dataframe)
+self._joinIntoArray(0, 4096, 'F4', self.dataframe)
+self._joinIntoArray(0, 4096, 'C3', self.dataframe)
+self._joinIntoArray(0, 4096, 'C4', self.dataframe)
+self._joinIntoArray(0, 4096, 'P3', self.dataframe)
+self._joinIntoArray(0, 4096, 'P4', self.dataframe)
+
+# Joins the columns into its respectives classes
+self._joinIntoValue(0,1,'Modality',self.dataframe)
+self._joinIntoValue(0,1,'Estimuli',self.dataframe)
+self._joinIntoValue(0,1,'Artifact',self.dataframe)
