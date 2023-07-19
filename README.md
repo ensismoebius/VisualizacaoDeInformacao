@@ -7,7 +7,7 @@
 
 # Information Visualization
 
-Materials produced for the Information Visualization course of the graduate program at UNESP São José do Rio Preto - São Paulo - Brazil - IBILCE/UNESP.
+Materials produced for the Information Visualization course of the post-graduation program at UNESP São José do Rio Preto - São Paulo - Brazil - IBILCE/UNESP.
 
 ## Software
 To run the visualization system, please follow these steps:
